@@ -27,32 +27,32 @@ inputs:
       - .fai
       - ^.dict
   cosmic:
-    type: File
+    type: File?
     inputBinding:
       prefix: --cosmic
     secondaryFiles: .tbi
   dbsnp:
-    type: File
+    type: File?
     inputBinding:
       prefix: --dbsnp
     secondaryFiles: .tbi
   tumor_lod:
-    type: float
+    type: float?
     default: 6.3
     inputBinding:
       prefix: --tumor_lod
   initial_tumor_lod:
-    type: float
+    type: float?
     default: 4.0
     inputBinding:
       prefix: --initial_tumor_lod
   out:
-    type: string
+    type: string?
     default: mutect_call_stats.txt
     inputBinding:
       prefix: --out
   coverage_file:
-    type: string
+    type: string?
     default: mutect_coverage.wig.txt
     inputBinding:
       prefix: --coverage_file
@@ -62,7 +62,7 @@ inputs:
     inputBinding:
       prefix: --vcf
   ncpus:
-    type: int
+    type: int?
     default: 8
     inputBinding:
       prefix: "--ncpus"

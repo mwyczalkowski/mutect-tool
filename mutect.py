@@ -75,6 +75,8 @@ ${CONTAMINATION_LINE}
 --initial_tumor_lod ${INITIAL_TUMOR__LOD}
 --coverage_file ${OUTPUT_BASE}.${BLOCK_NUM}.coverage
 --vcf ${OUTPUT_BASE}.${BLOCK_NUM}.vcf
+--tumor_sample_name TUMOR
+--normal_sample_name NORMAL
 """.replace("\n", " "))
 
     for i, block in enumerate(fai_chunk( ref_seq + ".fai", block_size ) ):

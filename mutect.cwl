@@ -4,7 +4,7 @@ label: MuTect
 baseCommand: ["python", "/opt/mutect.py", "--workdir", "."]
 requirements:
   - class: DockerRequirement
-    dockerPull: opengenomics/mutect:latest
+    dockerPull: mwyczalkowski/mutect:latest
 
 inputs:
   tumor:

@@ -59,6 +59,13 @@ def call_cmd_iter(java, mutect, ref_seq, block_size, tumor_bam, normal_bam,
     if contamination is not None:
         contamination_line = "--fraction_contamination %s" % (contamination)
 
+# From SomaticWrapper, using v1.1.7:
+# "java  \${JAVA_OPTS} -jar "."$mutect1  -T MuTect -R $h38_REF -L $chr1 --dbsnp $DB_SNP_MUTECT --cosmic $DB_COSMIC_MUTECT -I:normal \${NBAM} -I:tumor \${TBAM} --artifact_detection_mode -vcf \${rawvcf}\n";
+# The one difference between calls below and SomaticWrapper is the use of --artifact_detection_mode
+# however, this does not appear to be supported in mutect-1.1.7 or before, so it is not clear it does anything
+
+# Obtain all arguments: java -Xmx4g -jar muTect-1.1.5.jar -h
+
     template = Template("""
 ${JAVA}
 -Xmx7g -XX:ParallelGCThreads=2 -jar ${MUTECT}
@@ -171,7 +178,9 @@ def run_mutect(args):
         if vcf_writer is None:
             vcf_writer = vcf.Writer(open(os.path.join(args['vcf']), "w"), vcf_reader)
         for record in vcf_reader:
-            vcf_writer.write_record(record)
+# discard REJECT records unless unless keeping filtered variants
+            if (record.FILTER[0] != "REJECT" or args['keep_filtered']):
+                vcf_writer.write_record(record)
     vcf_writer.close()
 
     if args['out'] is not None:
@@ -204,7 +213,7 @@ def run_mutect(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("-m", "--mutect", help="Which Copy of Mutect", default="/opt/muTect-1.1.5.jar")
+    parser.add_argument("-m", "--mutect", help="Which Copy of Mutect", default="mutect-1.1.7.jar")
 
     parser.add_argument("--input_file:index:normal")
     parser.add_argument("--input_file:normal", required=True)
@@ -225,6 +234,7 @@ if __name__ == "__main__":
     parser.add_argument("--vcf", required=True)
     parser.add_argument("--no-clean", action="store_true", default=False)
     parser.add_argument("--java", default="/usr/bin/java")
+    parser.add_argument("--keep_filtered", action="store_true", default=False)
 
     parser.add_argument("-b", type=long, help="Parallel Block Size", default=50000000)
 

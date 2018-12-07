@@ -25,4 +25,5 @@ RUN unzip picard-tools-1.122.zip
 RUN ln -s picard-tools-1.122 picard
 
 #COPY src/mutect.py /opt/
-run git clone https://github.com/mwyczalkowski/mutect-tool.git
+ENV foo=1
+RUN git clone https://github.com/mwyczalkowski/mutect-tool.git

@@ -64,7 +64,7 @@ def call_cmd_iter(java, mutect, ref_seq, block_size, tumor_bam, normal_bam,
 # The one difference between calls below and SomaticWrapper is the use of --artifact_detection_mode
 # however, this does not appear to be supported in mutect-1.1.7 or before, so it is not clear it does anything
 
-# Obtain all arguments: java -Xmx4g -jar muTect-1.1.5.jar -h
+# Obtain all arguments: java -Xmx4g -jar mutect-1.1.7.jar -h
 
     template = Template("""
 ${JAVA}

@@ -1,7 +1,7 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: MuTect
-baseCommand: ["python", "/opt/mutect.py", "--workdir", "."]
+baseCommand: ["python", "/opt/mutect-tool/src/mutect-tool.py", "--workdir", "."]
 requirements:
   - class: DockerRequirement
     dockerPull: dinglab2/mutect-tool:latest
@@ -66,6 +66,12 @@ inputs:
     default: 8
     inputBinding:
       prefix: "--ncpus"
+  keep_filtered:
+    type: boolean?
+    inputBinding:
+      position: 0
+      prefix: '--keep_filtered'
+    label: Retain REJECT variants
 
 outputs:
   coverage:

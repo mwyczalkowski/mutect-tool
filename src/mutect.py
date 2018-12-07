@@ -179,8 +179,8 @@ def run_mutect(args):
             vcf_writer = vcf.Writer(open(os.path.join(args['vcf']), "w"), vcf_reader)
         for record in vcf_reader:
 # discard REJECT records unless unless keeping filtered variants
-            if (record.FILTER[0] != "REJECT" or args['keep_filtered']):
-                vcf_writer.write_record(record)
+#            if (record.FILTER[0] != "REJECT" or args['keep_filtered']):
+            vcf_writer.write_record(record)
     vcf_writer.close()
 
     if args['out'] is not None:
@@ -213,7 +213,7 @@ def run_mutect(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("-m", "--mutect", help="Which Copy of Mutect", default="mutect-1.1.7.jar")
+    parser.add_argument("-m", "--mutect", help="Which Copy of Mutect", default="/opt/mutect-1.1.7.jar")
 
     parser.add_argument("--input_file:index:normal")
     parser.add_argument("--input_file:normal", required=True)

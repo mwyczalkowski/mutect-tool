@@ -1,7 +1,7 @@
 # Currently built on denali
 
 #IMAGE="mwyczalkowski/somatic-wrapper:cwl"
-IMAGE="mwyczalkowski/mutect:latest"
+IMAGE="dinglab2/mutect-tool:latest"
 
 cd ..
 docker build -t $IMAGE -f docker/Dockerfile .

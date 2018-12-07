@@ -13,14 +13,16 @@ RUN pip install PyVCF
 WORKDIR /opt
 
 #
-# Download and unpack Mutect
+# Download and unpack Mutect and picard
 #
-RUN wget https://github.com/broadinstitute/mutect/releases/download/1.1.5/muTect-1.1.5-bin.zip
+# Use v1.1.7 for consistency with SomaticWrapper
+# This URL saves with given file on browser, but need to specify name explicitly for wget
+RUN wget https://software.broadinstitute.org/gatk/download/auth?package=M1 -O mutect-1.1.7.jar.zip
+RUN unzip mutect-1.1.7.jar.zip
+
 RUN wget https://github.com/broadinstitute/picard/releases/download/1.122/picard-tools-1.122.zip
-
-RUN unzip muTect-1.1.5-bin.zip
 RUN unzip picard-tools-1.122.zip
-COPY mutect.py /opt/
-
-# Link the picard tools to /opt/picard
 RUN ln -s picard-tools-1.122 picard
+
+#COPY src/mutect.py /opt/
+run git clone https://github.com/mwyczalkowski/mutect-tool.git

@@ -4,7 +4,7 @@ label: MuTect
 baseCommand: ["python", "/opt/mutect.py", "--workdir", "."]
 requirements:
   - class: DockerRequirement
-    dockerPull: mwyczalkowski/mutect:latest
+    dockerPull: dinglab2/mutect-tool:latest
 
 inputs:
   tumor:

@@ -178,9 +178,9 @@ def run_mutect(args):
         if vcf_writer is None:
             vcf_writer = vcf.Writer(open(os.path.join(args['vcf']), "w"), vcf_reader)
         for record in vcf_reader:
-# discard REJECT records unless unless keeping filtered variants
-#            if (record.FILTER[0] != "REJECT" or args['keep_filtered']):
-            vcf_writer.write_record(record)
+            # discard REJECT records unless unless keeping filtered variants
+            if (record.FILTER[0] != "REJECT" or args['keep_filtered']):
+                vcf_writer.write_record(record)
     vcf_writer.close()
 
     if args['out'] is not None:

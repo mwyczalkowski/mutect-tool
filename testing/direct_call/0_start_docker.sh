@@ -1,6 +1,5 @@
 
 IMAGE="dinglab2/mutect-tool:latest"
-#DATD="/Users/mwyczalk/Projects/Rabix/somatic_sv_workflow/testing/demo_data"
 DATD="../demo_data"
 #ADATD=$(readlink -f $DATD)
 

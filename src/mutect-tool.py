@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 # Notes on memory issues
-# mutect-tool.py shipped with java memory allocation as defined with "-Xm7g"
+# mutect-tool.py shipped with java memory allocation as defined with "-Xmx7g"
 # This can cause docker container to die with out of memory issues
 # Memory (and any other java) parameters are read from JAVA_OPTS environemnt parameter
 

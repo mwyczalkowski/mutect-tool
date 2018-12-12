@@ -13,10 +13,16 @@ ADATD=$(python -c 'import os,sys;print(os.path.realpath(sys.argv[1]))' $DATD)
 NORMAL="/data/HCC1954.NORMAL.30x.compare.COST16011_region.bam"
 TUMOR="/data/G15512.HCC1954.1.COST16011_region.bam"
 REF="/data/Homo_sapiens_assembly19.COST16011_region.fa"
-OUT="mutect_result.vcf"
+OUT="/data/mutect_result.vcf"
 
-CMD="/opt/mutect-tool/src/mutect-tool.py --input_file:normal $NORMAL --input_file:tumor $TUMOR --reference_sequence $REF --vcf $OUT "
-#/opt/mutect-tool/src/mutect-tool.py --input_file:normal $NORMAL --input_file:tumor $TUMOR --reference_sequence $REF --vcf $OUT 
+CMD="/opt/mutect-tool/src/mutect-tool.py --input_file:normal $NORMAL --input_file:tumor $TUMOR --reference_sequence $REF --vcf $OUT --keep_filtered"
+
+# This sets options for java execution running mutect
+#JAVA_OPTS="-Xmx7g"  # fails on straight docker on katmai
+JAVA_OPTS="-Xmx1g"
 
 
-docker run -v $ADATD:/data -it $IMAGE $CMD
+docker run -e JAVA_OPTS="$JAVA_OPTS" -v $ADATD:/data -it $IMAGE $CMD
+
+# running with no JAVA_OPTS
+# docker run -v $ADATD:/data -it $IMAGE $CMD

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 # Notes on memory issues
-# mutect-tool.py shipped with java memory allocation as defined with "-Xm7g"
+# mutect-tool.py shipped with java memory allocation as defined with "-Xmx7g"
 # This can cause docker container to die with out of memory issues
 # Memory (and any other java) parameters are read from JAVA_OPTS environemnt parameter
 
@@ -92,6 +92,11 @@ ${CONTAMINATION_LINE}
 --normal_sample_name NORMAL
 """.replace("\n", " "))
 
+    if "JAVA_OPTS" in os.environ:
+        jo = os.environ['JAVA_OPTS']
+    else:
+        jo = ""
+
     for i, block in enumerate(fai_chunk( ref_seq + ".fai", block_size ) ):
         cosmic_line = ""
         if cosmic is not None:
@@ -103,7 +108,7 @@ ${CONTAMINATION_LINE}
         cmd = template.substitute(
             dict(
                 JAVA=java,
-                JAVA_OPTS=os.environ['JAVA_OPTS'],
+                JAVA_OPTS=jo,
                 REF_SEQ=ref_seq,
                 BLOCK_NUM=i,
                 INTERVAL="%s:%s-%s" % (block[0], block[1], block[2]) ),

@@ -17,7 +17,7 @@ cosmic:
 dbsnp:
   class: File
   path: /diskmnt/Datasets/dbSNP/human_9606_b150_GRCh38p7/00-All.vcf.gz
-vcf: "manta_result.vcf"
+vcf: "mutect_result.vcf"
 
 
 

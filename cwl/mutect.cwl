@@ -5,6 +5,10 @@ baseCommand: ["python", "/opt/mutect-tool/src/mutect-tool.py", "--workdir", "."]
 requirements:
   - class: DockerRequirement
     dockerPull: dinglab2/mutect-tool:latest
+  - class: EnvVarRequirement
+    envDef:
+      - envName: JAVA_OPTS
+        envValue: -Xmx1g
 
 inputs:
   tumor:

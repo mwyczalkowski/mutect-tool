@@ -1,5 +1,10 @@
 #!/usr/bin/env python
 
+# Notes on memory issues
+# mutect-tool.py shipped with java memory allocation as defined with "-Xm7g"
+# This can cause docker container to die with out of memory issues
+# Memory (and any other java) parameters are read from JAVA_OPTS environemnt parameter
+
 from __future__ import print_function
 
 import sys
@@ -65,10 +70,11 @@ def call_cmd_iter(java, mutect, ref_seq, block_size, tumor_bam, normal_bam,
 # however, this does not appear to be supported in mutect-1.1.7 or before, so it is not clear it does anything
 
 # Obtain all arguments: java -Xmx4g -jar mutect-1.1.7.jar -h
+# By defalt, JAVA_OPTS was "-Xmx7g"
 
     template = Template("""
 ${JAVA}
--Xmx7g -XX:ParallelGCThreads=2 -jar ${MUTECT}
+${JAVA_OPTS} -XX:ParallelGCThreads=2 -jar ${MUTECT}
 --analysis_type MuTect
 --reference_sequence ${REF_SEQ}
 --intervals '${INTERVAL}'
@@ -97,6 +103,7 @@ ${CONTAMINATION_LINE}
         cmd = template.substitute(
             dict(
                 JAVA=java,
+                JAVA_OPTS=os.environ['JAVA_OPTS'],
                 REF_SEQ=ref_seq,
                 BLOCK_NUM=i,
                 INTERVAL="%s:%s-%s" % (block[0], block[1], block[2]) ),

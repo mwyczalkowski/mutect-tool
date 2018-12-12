@@ -1,0 +1,23 @@
+# Test data from manta distribution: https://github.com/Illumina/manta/tree/master/src/demo/data
+# Uncompress reference with,
+# 	tar -xvjf Homo_sapiens_assembly19.COST16011_region.fa.tar.bz2
+
+tumor:
+  class: File
+  path: /diskmnt/Projects/cptac/GDC_import/data/524d1cea-62cd-483c-8137-19450faf72b6/82ccdf4e-4527-47ca-8151-7e1248f1da09_gdc_realn.bam
+normal:
+  class: File
+  path: /diskmnt/Projects/cptac/GDC_import/data/1dee4e84-b617-43a2-add1-c68c5e36bcec/1561b97d-8c8f-4fe6-a244-06452760074d_gdc_realn.bam
+reference:
+  class: File
+  path: /diskmnt/Datasets/Reference/GRCh38.d1.vd1/GRCh38.d1.vd1.fa
+cosmic:
+  class: File
+  path: /diskmnt/Datasets/COSMIC/CosmicCodingMuts.grch38.v84.vcf.gz
+dbsnp:
+  class: File
+  path: /diskmnt/Datasets/dbSNP/human_9606_b150_GRCh38p7/00-All.vcf.gz
+vcf: "manta_result.vcf"
+
+
+

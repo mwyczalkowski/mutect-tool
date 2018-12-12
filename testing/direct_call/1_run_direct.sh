@@ -6,5 +6,5 @@ REF="/data/Homo_sapiens_assembly19.COST16011_region.fa"
 OUT="mutect_result.vcf"
 
 /opt/mutect-tool/src/mutect-tool.py --input_file:normal $NORMAL --input_file:tumor $TUMOR --reference_sequence $REF --vcf $OUT --keep_filtered
-#/opt/mutect-tool/src/mutect-tool.py --input_file:normal $NORMAL --input_file:tumor $TUMOR --reference_sequence $REF --vcf $OUT 
 
+echo Written to $OUT

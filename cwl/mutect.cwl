@@ -79,11 +79,11 @@ inputs:
 
 outputs:
   coverage:
-    type: File
+    type: File?
     outputBinding:
       glob: $(inputs.coverage_file)
   call_stats:
-    type: File
+    type: File?
     outputBinding:
       glob: $(inputs.out)
   mutations:

@@ -7,4 +7,6 @@ For development and testing purposes, this project ships with test data and demo
 scripts for running directly (in docker container), by calling docker image, and by calling CWL tool.
 See ./testing for details.
 
+Docker image: `dinglab2/mutect-tool:20190313`
+
 Contact: Matt Wyczalkowski (m.wyczalkowski@wustl.edu)

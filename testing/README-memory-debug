@@ -18,9 +18,6 @@ The following was output, though its significance is not clear:
     picard.sam.CreateSequenceDictionary done. Elapsed time: 0.36 minutes.
     Runtime.totalMemory()=1386217472  [ 1.3Gb ]
 
+Output of 12/12/18 run: /diskmnt/Projects/cptac_downloads_4/Rabix/mutect-2018-12-12-162320.617/root
 
-Composer adds the following lines to CWL.  These are left here for reference but not tested
-- class: ResourceRequirement
-  ramMin: 8000
-- class: InlineJavascriptRequirement
 

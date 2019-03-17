@@ -1,12 +1,12 @@
 # Mutect CWL Tool
 
+Simple CWL wrapper for [mutect-1.1.7](https://software.broadinstitute.org/cancer/cga/mutect) for use with TinDaisy.
 Based on [OpenGenomics/mutect-tool](https://github.com/OpenGenomics/mutect-tool)
 
-## TODO
+For development and testing purposes, this project ships with test data and demonstration
+scripts for running directly (in docker container), by calling docker image, and by calling CWL tool.
+See ./testing for details.
 
-The generated file `mutect_call_stats.txt` is quite large (350Mb+ in testing), and should be compressed or possibly omitted 
+Docker image: `dinglab2/mutect-tool:20190313`
 
-## Testing
-
-Execution testing takes place at 3 levels:
-* `testing/run_direct`: Run `src/mutect.py` script directly inside of docker container.  
+Contact: Matt Wyczalkowski (m.wyczalkowski@wustl.edu)

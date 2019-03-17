@@ -1,3 +1,3 @@
-IMAGE="dinglab2/mutect-tool:20190313"
+IMAGE="dinglab2/mutect-tool:20190317"
 docker push $IMAGE
 

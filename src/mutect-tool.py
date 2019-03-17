@@ -220,7 +220,7 @@ def run_mutect(args):
 
 
     if not args['no_clean']:
-        shutil.rmtree(workdir)
+        shutil.rmtree(workdir, ignore_errors=True)
 
 
 

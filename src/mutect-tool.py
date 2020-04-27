@@ -4,6 +4,13 @@
 # mutect-tool.py shipped with java memory allocation as defined with "-Xmx7g"
 # This can cause docker container to die with out of memory issues
 # Memory (and any other java) parameters are read from JAVA_OPTS environemnt parameter
+# The hypothesis is that NCPU * Xmx <= RamMin, on the thinking that each thread requires Xmx and there will be NCPU of them,
+# so at least RamMin must be provided to docker container
+
+# Implementing changes 20200427:
+# * tumor_lod and initial_tumor_lod are optional arguments.  Do not use mutect-tool defaults 
+# * implement --artifact_detection_mode
+# * send all errors to stdout
 
 from __future__ import print_function
 
@@ -53,12 +60,7 @@ def cmds_runner(cmds, cpus):
 
 def call_cmd_iter(java, mutect, ref_seq, block_size, tumor_bam, normal_bam,
     output_base, cosmic, dbsnp,
-    contamination, tumor_lod, initial_tumor_lod):
-
-    """
-    --cosmic $args.cosmic
-    --dbsnp $args.dbsnp
-    """
+    contamination, tumor_lod, initial_tumor_lod, artifact_detection_mode):
 
     contamination_line = ""
     if contamination is not None:
@@ -66,8 +68,7 @@ def call_cmd_iter(java, mutect, ref_seq, block_size, tumor_bam, normal_bam,
 
 # From SomaticWrapper, using v1.1.7:
 # "java  \${JAVA_OPTS} -jar "."$mutect1  -T MuTect -R $h38_REF -L $chr1 --dbsnp $DB_SNP_MUTECT --cosmic $DB_COSMIC_MUTECT -I:normal \${NBAM} -I:tumor \${TBAM} --artifact_detection_mode -vcf \${rawvcf}\n";
-# The one difference between calls below and SomaticWrapper is the use of --artifact_detection_mode
-# however, this does not appear to be supported in mutect-1.1.7 or before, so it is not clear it does anything
+
 
 # Obtain all arguments: java -Xmx4g -jar mutect-1.1.7.jar -h
 # By defalt, JAVA_OPTS was "-Xmx7g"
@@ -84,13 +85,17 @@ ${JAVA_OPTS} -XX:ParallelGCThreads=2 -jar ${MUTECT}
 ${COSMIC_LINE}
 ${DBSNP_LINE}
 ${CONTAMINATION_LINE}
---tumor_lod ${TUMOR_LOD}
---initial_tumor_lod ${INITIAL_TUMOR__LOD}
+${TUMOR_LOD_LINE}
+${INITIAL_TUMOR_LOD_LINE}
+${ARTIFACT_DETECTION_MODE_LINE}
 --coverage_file ${OUTPUT_BASE}.${BLOCK_NUM}.coverage
 --vcf ${OUTPUT_BASE}.${BLOCK_NUM}.vcf
 --tumor_sample_name TUMOR
 --normal_sample_name NORMAL
 """.replace("\n", " "))
+# Was:
+# --tumor_lod ${TUMOR_LOD}
+# --initial_tumor_lod ${INITIAL_TUMOR_LOD}
 
     if "JAVA_OPTS" in os.environ:
         jo = os.environ['JAVA_OPTS']
@@ -104,6 +109,17 @@ ${CONTAMINATION_LINE}
         dbsnp_line = ""
         if dbsnp is not None:
             dbsnp_line = "--dbsnp %s" % (dbsnp)
+
+        tumor_lod_line = ""
+        if tumor_lod is not None:
+            tumor_lod_line = "--tumor_lod %s" % (tumor_lod)
+        initial_tumor_lod_line = ""
+        if initial_tumor_lod is not None:
+            initial_tumor_lod_line = "--initial_tumor_lod %s" % (initial_tumor_lod))
+
+        artifact_detection_mode_line = ""
+        if artifact_detection_mode is not None:
+            artifact_detection_mode_line = "--artifact_detection_mode %s" % (artifact_detection_mode))
 
         cmd = template.substitute(
             dict(
@@ -119,8 +135,9 @@ ${CONTAMINATION_LINE}
                 COSMIC_LINE=cosmic_line,
                 DBSNP_LINE=dbsnp_line,
                 CONTAMINATION_LINE=contamination_line,
-                TUMOR_LOD=tumor_lod,
-                INITIAL_TUMOR__LOD=initial_tumor_lod
+                TUMOR_LOD_LINE=tumor_lod_line,
+                INITIAL_TUMOR_LOD_LINE=initial_tumor_lod_line,
+                ARTIFACT_DETECTION_MODE_LINE=artifact_detection_mode_line
         )
         yield cmd, "%s.%s" % (output_base, i)
 
@@ -178,7 +195,8 @@ def run_mutect(args):
         dbsnp=args['dbsnp'],
         contamination = contamination,
         tumor_lod=args['tumor_lod'],
-        initial_tumor_lod=args['initial_tumor_lod']
+        initial_tumor_lod=args['initial_tumor_lod'],
+        artifact_detection_mode=args['artifact_detection_mode']
         )
     )
 
@@ -225,6 +243,9 @@ def run_mutect(args):
 
 
 if __name__ == "__main__":
+    # All logging output to stderr
+    logging.basicConfig(level=os.environ.get("LOGLEVEL", "INFO"))
+
     parser = argparse.ArgumentParser()
     parser.add_argument("-m", "--mutect", help="Which Copy of Mutect", default="/opt/mutect-1.1.7.jar")
 
@@ -242,8 +263,12 @@ if __name__ == "__main__":
 
     parser.add_argument("--fraction_contamination", default=None)
     parser.add_argument("--fraction_contamination-file", default=None)
-    parser.add_argument("--tumor_lod", type=float, default=6.3)
-    parser.add_argument("--initial_tumor_lod", type=float, default=4.0)
+    # parser.add_argument("--tumor_lod", type=float, default=6.3)
+    # parser.add_argument("--initial_tumor_lod", type=float, default=4.0)
+    parser.add_argument("--tumor_lod", type=float, default=None)
+    parser.add_argument("--initial_tumor_lod", type=float, default=None)
+    parser.add_argument("--artifact_detection_mode", action="store_true", default=False)
+
     parser.add_argument("--vcf", required=True)
     parser.add_argument("--no-clean", action="store_true", default=False)
     parser.add_argument("--java", default="/usr/bin/java")

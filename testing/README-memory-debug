@@ -1,23 +1,11 @@
-Getting problems running manta sample data on katmai inside docker (direct call)
-Running out of memory.
+Jobs which die suddenly with "Killed" error output seem to be caused by running out of memory. 
 
-To debug, modifying image dinglab2/mutect-tool:latest with 
-docker commit 
-This introduces changes which will not be preserved upon docker build
-Also making git memory-debug branch which will not be pushed to github
+There are three parameters to tweak in a cromwell run:
+* Java parameter Xmx?g, seems to be maximum memory in g per job
+* rammin - parameter passed to cromwell
+* ncpu - number of jobs running at once
 
-Partial solution to memory issues
-* -xMx7g call to java mutect.jar fails because of out of memory issues when running manually inside of docker
-* This has been replaced by a more general method
-  * JAVA_OPTS environment variable is passed to the java call
-  * Can call `export JAVA_OPTS="-xMx7g"` before executing `python mutext-tool.py` to reproduce default behavior
-  * JAVA_OPTS also be set during `docker run` call
+The hypothesis is that NCPU * Xmx <= RamMin, on the thinking that each thread requires Xmx and there will be NCPU of them,
+so at least RamMin must be provided
 
-Were able to run WXS C3L-00004 test to completion from a rabix (CWL) call, with no JAVA_OPTS variables set.
-The following was output, though its significance is not clear:
-    picard.sam.CreateSequenceDictionary done. Elapsed time: 0.36 minutes.
-    Runtime.totalMemory()=1386217472  [ 1.3Gb ]
-
-Output of 12/12/18 run: /diskmnt/Projects/cptac_downloads_4/Rabix/mutect-2018-12-12-162320.617/root
-
-
+Setting Xmx2g, rammin = 18, ncpu = 8 seems to be stable.

@@ -2,7 +2,7 @@
 
 SYSTEM=docker   # MGI and compute1
 IMAGE="dinglab2/mutect-tool:latest"
-START_DOCKERD="~/WUDocker"  # https://github.com/ding-lab/WUDocker.git
+START_DOCKERD="~/Projects/WUDocker"  # https://github.com/ding-lab/WUDocker.git
 
 VOLUME_MAPPING="../demo_data:/data"
 

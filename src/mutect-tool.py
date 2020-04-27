@@ -39,7 +39,7 @@ def fai_chunk(path, blocksize):
             yield (seq, i, min(i+blocksize-1, l))
 
 def cmd_caller(cmd):
-    logging.info("RUNNING: ", cmd)
+    logging.info("mutect-tool.py running: %s", cmd)
     p = subprocess.Popen(
         cmd,
         shell=True,
@@ -118,7 +118,7 @@ ${ARTIFACT_DETECTION_MODE_LINE}
             initial_tumor_lod_line = "--initial_tumor_lod %s" % (initial_tumor_lod)
 
         artifact_detection_mode_line = ""
-        if artifact_detection_mode is not None:
+        if artifact_detection_mode :
             artifact_detection_mode_line = "--artifact_detection_mode"
 
         cmd = template.substitute(

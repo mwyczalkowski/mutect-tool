@@ -1,3 +1,5 @@
 Homo_sapiens_assembly19.COST16011_region.fa
 results
 .*.swp
+logs
+tmp

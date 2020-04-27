@@ -4,8 +4,8 @@ IMAGE="dinglab2/mutect-tool:20200427"
 NORMAL="/data/HCC1954.NORMAL.30x.compare.COST16011_region.bam"
 TUMOR="/data/G15512.HCC1954.1.COST16011_region.bam"
 REF="/data/Homo_sapiens_assembly19.COST16011_region.fa"
-OUT="/data/mutect_result.run1.vcf"
-ARGS=""
+OUT="/data/mutect_result.run2.vcf"
+ARGS="--tumor_lod 33 --initial_tumor_lod 22 --artifact_detection_mode"
 
 CMD="/opt/mutect-tool/src/mutect-tool.py --input_file:normal $NORMAL --input_file:tumor $TUMOR --reference_sequence $REF --vcf $OUT --keep_filtered $ARGS"
 

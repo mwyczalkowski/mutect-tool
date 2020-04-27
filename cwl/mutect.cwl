@@ -1,15 +1,16 @@
 cwlVersion: v1.0
 class: CommandLineTool
 label: MuTect
-baseCommand: ["python", "/opt/mutect-tool/src/mutect-tool.py", "--workdir", "."]
+baseCommand: ["/usr/bin/python", "/opt/mutect-tool/src/mutect-tool.py", "--workdir", "."]
 requirements:
   - class: DockerRequirement
-    dockerPull: dinglab2/mutect-tool:20190313
+    dockerPull: dinglab2/mutect-tool:20190317
   - class: EnvVarRequirement
     envDef:
       - envName: JAVA_OPTS
-        envValue: -Xmx1g
-
+        envValue: -Xmx2g
+  - class: ResourceRequirement
+    ramMin: 18000
 inputs:
   tumor:
     type: File
@@ -76,7 +77,12 @@ inputs:
       position: 0
       prefix: '--keep_filtered'
     label: Retain REJECT variants
-
+  - id: artifact_detection_mode
+    type: boolean?
+    inputBinding:
+      position: 0
+      prefix: '--artifact_detection_mode'
+    doc: Enable mutect artifact_detection_mode
 outputs:
   coverage:
     type: File?

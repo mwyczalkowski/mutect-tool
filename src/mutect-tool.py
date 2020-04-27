@@ -115,11 +115,11 @@ ${ARTIFACT_DETECTION_MODE_LINE}
             tumor_lod_line = "--tumor_lod %s" % (tumor_lod)
         initial_tumor_lod_line = ""
         if initial_tumor_lod is not None:
-            initial_tumor_lod_line = "--initial_tumor_lod %s" % (initial_tumor_lod))
+            initial_tumor_lod_line = "--initial_tumor_lod %s" % (initial_tumor_lod)
 
         artifact_detection_mode_line = ""
         if artifact_detection_mode is not None:
-            artifact_detection_mode_line = "--artifact_detection_mode %s" % (artifact_detection_mode))
+            artifact_detection_mode_line = "--artifact_detection_mode"
 
         cmd = template.substitute(
             dict(

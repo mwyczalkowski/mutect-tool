@@ -17,7 +17,7 @@ coverage_file: mutect_coverage.wig.txt  # default value of type "string". (optio
 
 # tumor_lod: 6.3  # default value of type "float". (optional)
 # initial_tumor_lod: 4.0  # default value of type "float". (optional)
-artifact_detection_mode: false  # type "boolean" (optional)
+# artifact_detection_mode: false  # type "boolean" (optional)  # this is now an argument, on by default
 
 # NOT doing dbSnP filtering
 #dbsnp:  # type "File" (optional)
